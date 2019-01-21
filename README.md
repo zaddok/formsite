@@ -20,4 +20,11 @@ How to use the formsite Go API:
                 fmt.Println(result)
         }
 
+## Related links
 
+ - Formsite API Documentation: https://support.formsite.com/hc/en-us/articles/360000288594-API
+ - To find your API key and URL:
+    - go to a form you have created
+    - click on "Settings" for that form,
+    - click on "Integrations"
+    - click on "Formsite API"
