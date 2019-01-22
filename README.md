@@ -2,7 +2,7 @@
 
 How to use the formsite Go API:
 
-        api := NewFormsiteApi("https://fs22.formsite.com/api/users/myusername/forms", "myapikey")
+        api := formsite.NewFormsiteApi("https://fs22.formsite.com/api/users/myusername/forms", "myapikey")
 
         forms, err := api.GetForms()
         if err != nil {

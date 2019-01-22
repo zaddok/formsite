@@ -1,4 +1,4 @@
-package goformsite
+package formsite
 
 import (
 	"encoding/xml"
