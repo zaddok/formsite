@@ -114,7 +114,7 @@ func (fs *FormsiteApi) GetResults(formName string) ([]*Result, error) {
 		for _, i := range result.Items {
 			hn := i.Id
 			if _, v := h[i.Id]; v {
-				hn = h[i.Id]
+				hn = h[i.Id] + "|" + i.Id
 			}
 			r.Fields[hn] = i.Value
 		}
