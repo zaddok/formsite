@@ -58,7 +58,7 @@ type Result struct {
 
 // GetResults returns the contents of a form. First call should start with page=1
 func (fs *FormsiteApi) GetResults(formName string, page int64) ([]*Result, error) {
-	url := fmt.Sprintf("%s/%s/results?fs_api_key=%s&fs_include_headings", fs.apiUrl, formName, fs.apiKey)
+	url := fmt.Sprintf("%s/%s/results?fs_api_key=%s&fs_limit=100&fs_page=%d&fs_include_headings", fs.apiUrl, formName, fs.apiKey, page)
 	body, _, _, err := fs.fetch.GetUrl(url)
 	if err != nil {
 		return []*Result{}, err
