@@ -56,7 +56,8 @@ type Result struct {
 	Metas  map[string]string
 }
 
-func (fs *FormsiteApi) GetResults(formName string) ([]*Result, error) {
+// GetResults returns the contents of a form. First call should start with page=1
+func (fs *FormsiteApi) GetResults(formName string, page int64) ([]*Result, error) {
 	url := fmt.Sprintf("%s/%s/results?fs_api_key=%s&fs_include_headings", fs.apiUrl, formName, fs.apiKey)
 	body, _, _, err := fs.fetch.GetUrl(url)
 	if err != nil {
@@ -119,7 +120,7 @@ func (fs *FormsiteApi) GetResults(formName string) ([]*Result, error) {
 			r.Fields[hn] = i.Value
 		}
 		for _, i := range result.Metas {
-			fmt.Println(i.Id, i.Value)
+			//fmt.Println(i.Id, i.Value)
 			r.Metas[i.Id] = i.Value
 		}
 		results = append(results, r)

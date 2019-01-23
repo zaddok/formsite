@@ -34,7 +34,7 @@ func TestFormsiteApi(t *testing.T) {
 	}
 
 	// Fetch results for a form
-	results, err := api.GetResults("form45")
+	results, err := api.GetResults("form45", 1)
 	if err != nil {
 		t.Errorf("api.GetResults() failed: %v", err)
 		return
