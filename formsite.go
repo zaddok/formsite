@@ -51,14 +51,24 @@ func (fs *FormsiteApi) GetForms() ([]Form, error) {
 }
 
 type Result struct {
-	Id     string
+	Id     int64
 	Fields map[string][]string
 	Metas  map[string]string
 }
 
 // GetResults returns the contents of a form. First call should start with page=1
+func (fs *FormsiteApi) GetResultsFrom(formName string, lastRequestId, page int64) ([]*Result, error) {
+	url := fmt.Sprintf("%s/%s/results?fs_api_key=%s&fs_limit=100&fs_page=%d&fs_include_headings&fs_min_id=%d", fs.apiUrl, formName, fs.apiKey, page, lastRequestId)
+	return fs.fetchResults(url)
+}
+
 func (fs *FormsiteApi) GetResults(formName string, page int64) ([]*Result, error) {
 	url := fmt.Sprintf("%s/%s/results?fs_api_key=%s&fs_limit=100&fs_page=%d&fs_include_headings", fs.apiUrl, formName, fs.apiKey, page)
+	return fs.fetchResults(url)
+
+}
+
+func (fs *FormsiteApi) fetchResults(url string) ([]*Result, error) {
 	body, _, _, err := fs.fetch.GetUrl(url)
 	if err != nil {
 		return []*Result{}, err
@@ -84,7 +94,7 @@ func (fs *FormsiteApi) GetResults(formName string, page int64) ([]*Result, error
 
 	type ResponseResult struct {
 		XMLName xml.Name             `xml:"result"`
-		Id      string               `xml:"id,attr"`
+		Id      int64                `xml:"id,attr"`
 		Metas   []ResponseResultMeta `xml:"metas>meta"`
 		Items   []ResponseResultItem `xml:"items>item"`
 	}

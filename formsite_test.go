@@ -47,4 +47,18 @@ func TestFormsiteApi(t *testing.T) {
 		fmt.Println(result)
 	}
 
+	// Fetch results for a form
+	results, err = api.GetResultsFrom("form45", 1, 999999999)
+	if err != nil {
+		t.Errorf("api.GetResults() failed: %v", err)
+		return
+	}
+	if len(results) > 0 {
+		t.Errorf("api.GetResults() failed: expecting no results")
+		return
+	}
+	for _, result := range results {
+		fmt.Println(result)
+	}
+
 }
