@@ -56,9 +56,9 @@ type Result struct {
 	Metas  map[string]string
 }
 
-// GetResults returns the contents of a form. First call should start with page=1
-func (fs *FormsiteApi) GetResultsFrom(formName string, lastRequestId, page int64) ([]*Result, error) {
-	url := fmt.Sprintf("%s/%s/results?fs_api_key=%s&fs_limit=100&fs_page=%d&fs_include_headings&fs_min_id=%d", fs.apiUrl, formName, fs.apiKey, page, lastRequestId)
+// GetResultsFrom returns any new form submissions after the last seen request id.
+func (fs *FormsiteApi) GetResultsFrom(formName string, lastRequestId, limit int64) ([]*Result, error) {
+	url := fmt.Sprintf("%s/%s/results?fs_api_key=%s&fs_limit=%d&fs_include_headings&fs_min_id=%d&fs_sort=1&fs_sort_direction=desc", fs.apiUrl, formName, fs.apiKey, limit, lastRequestId)
 	return fs.fetchResults(url)
 }
 

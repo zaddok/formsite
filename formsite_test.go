@@ -44,11 +44,11 @@ func TestFormsiteApi(t *testing.T) {
 		return
 	}
 	for _, result := range results {
-		fmt.Println(result)
+		fmt.Println(result.Id)
 	}
 
 	// Fetch results for a form
-	results, err = api.GetResultsFrom("form45", 1, 999999999)
+	results, err = api.GetResultsFrom("form45", 999999999, 5)
 	if err != nil {
 		t.Errorf("api.GetResults() failed: %v", err)
 		return
@@ -59,6 +59,32 @@ func TestFormsiteApi(t *testing.T) {
 	}
 	for _, result := range results {
 		fmt.Println(result)
+	}
+
+	// Fetch results for a form
+	results, err = api.GetResultsFrom("form44", 0, 5)
+	if err != nil {
+		t.Errorf("api.GetResults() failed: %v", err)
+		return
+	}
+	if len(results) != 5 {
+		t.Errorf("api.GetResults() failed: expecting 5 results")
+		return
+	}
+	for _, result := range results {
+		fmt.Println(result.Id)
+	}
+	results, err = api.GetResultsFrom("form44", results[4].Id, 5)
+	if err != nil {
+		t.Errorf("api.GetResults() failed: %v", err)
+		return
+	}
+	if len(results) != 5 {
+		t.Errorf("api.GetResults() failed: expecting 5 results")
+		return
+	}
+	for _, result := range results {
+		fmt.Println(result.Id + 1)
 	}
 
 }
