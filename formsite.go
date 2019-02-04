@@ -58,7 +58,7 @@ type Result struct {
 
 // GetResultsFrom returns any new form submissions after the last seen request id.
 func (fs *FormsiteApi) GetResultsFrom(formName string, lastRequestId, limit int64) ([]*Result, error) {
-	url := fmt.Sprintf("%s/%s/results?fs_api_key=%s&fs_limit=%d&fs_include_headings&fs_min_id=%d&fs_sort=1&fs_sort_direction=desc", fs.apiUrl, formName, fs.apiKey, limit, lastRequestId)
+	url := fmt.Sprintf("%s/%s/results?fs_api_key=%s&fs_limit=%d&fs_include_headings&fs_min_id=%d&fs_sort=result_id&fs_sort_direction=desc", fs.apiUrl, formName, fs.apiKey, limit, lastRequestId)
 	return fs.fetchResults(url)
 }
 
