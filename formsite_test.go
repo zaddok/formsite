@@ -34,6 +34,7 @@ func TestFormsiteApi(t *testing.T) {
 	}
 
 	// Fetch results for a form
+	fmt.Println("Fetch all results from form 45")
 	results, err := api.GetResults("form45", 1)
 	if err != nil {
 		t.Errorf("api.GetResults() failed: %v", err)
@@ -48,6 +49,7 @@ func TestFormsiteApi(t *testing.T) {
 	}
 
 	// Fetch results for a form
+	fmt.Println("Fetch one page of results from 45, from a high ID that doesnt exist. Expect 0 results")
 	results, err = api.GetResultsFrom("form45", 999999999, 5)
 	if err != nil {
 		t.Errorf("api.GetResults() failed: %v", err)
@@ -62,6 +64,7 @@ func TestFormsiteApi(t *testing.T) {
 	}
 
 	// Fetch results for a form
+	fmt.Println("Check we can fetch only the first 5 items from a list")
 	results, err = api.GetResultsFrom("form44", 0, 5)
 	if err != nil {
 		t.Errorf("api.GetResults() failed: %v", err)
@@ -74,6 +77,7 @@ func TestFormsiteApi(t *testing.T) {
 	for _, result := range results {
 		fmt.Println(result.Id)
 	}
+	fmt.Println("Check we can fetch only the most recent 5 items. Starting from id", results[4].Id)
 	results, err = api.GetResultsFrom("form44", results[4].Id, 5)
 	if err != nil {
 		t.Errorf("api.GetResults() failed: %v", err)
