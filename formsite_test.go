@@ -48,6 +48,21 @@ func TestFormsiteApi(t *testing.T) {
 		fmt.Println(result.Id)
 	}
 
+	// Fetch form field names
+	fmt.Println("Fetch all heading information from form 45")
+	headers, err := api.GetHeadings("form45")
+	if err != nil {
+		t.Errorf("api.GetHeadings() failed: %v", err)
+		return
+	}
+	if len(headers) < 12 {
+		t.Errorf("api.GetHeadings() failed: expecting more than twelve headers")
+		return
+	}
+	for i, header := range headers {
+		fmt.Println(i, header)
+	}
+
 	// Fetch results for a form
 	fmt.Println("Fetch one page of results from 45, from a high ID that doesnt exist. Expect 0 results")
 	results, err = api.GetResultsFrom("form45", 999999999, 5)

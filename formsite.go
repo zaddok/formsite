@@ -62,10 +62,40 @@ func (fs *FormsiteApi) GetResultsFrom(formName string, lastRequestId, limit int6
 	return fs.fetchResults(url)
 }
 
+type Heading struct {
+	XMLName xml.Name `xml:"heading"`
+	Id      string   `xml:"for,attr"`
+	Value   string   `xml:",chardata"`
+}
+
+// GetHeadings fetches the name of each field on a form, along with its associated `for` identifier
+func (fs *FormsiteApi) GetHeadings(formName string) ([]Heading, error) {
+	/*
+	   <fs_response status="success" timestamp="2019-03-18 12:04:47">
+	   <headings>
+	   <heading for="result_status">Result Status</heading>
+	*/
+	url := fmt.Sprintf("%s/%s/results?fs_api_key=%s&fs_limit=1&fs_include_headings", fs.apiUrl, formName, fs.apiKey)
+	body, _, _, err := fs.fetch.GetUrl(url)
+	if err != nil {
+		return []Heading{}, err
+	}
+
+	type Response struct {
+		XMLName  xml.Name  `xml:"fs_response"`
+		Headings []Heading `xml:"headings>heading"`
+	}
+	var result Response
+
+	if err := xml.Unmarshal([]byte(body), &result); err != nil {
+		return []Heading{}, err
+	}
+	return result.Headings[:], nil
+}
+
 func (fs *FormsiteApi) GetResults(formName string, page int64) ([]*Result, error) {
 	url := fmt.Sprintf("%s/%s/results?fs_api_key=%s&fs_limit=100&fs_page=%d&fs_include_headings", fs.apiUrl, formName, fs.apiKey, page)
 	return fs.fetchResults(url)
-
 }
 
 func (fs *FormsiteApi) fetchResults(url string) ([]*Result, error) {
