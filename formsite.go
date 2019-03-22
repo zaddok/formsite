@@ -51,9 +51,15 @@ func (fs *FormsiteApi) GetForms() ([]Form, error) {
 }
 
 type Result struct {
-	Id     int64
-	Fields map[string][]string
-	Metas  map[string]string
+	Id         int64
+	Fields     map[string][]string
+	fieldsById map[string][]string
+	Metas      map[string]string
+}
+
+func (r *Result) FieldById(id string) []string {
+	return r.fieldsById[id]
+
 }
 
 // GetResultsFrom returns any new form submissions after the last seen request id.
@@ -148,9 +154,10 @@ func (fs *FormsiteApi) fetchResults(url string) ([]*Result, error) {
 	results := make([]*Result, 0)
 	for _, result := range result.Results {
 		r := &Result{
-			Id:     result.Id,
-			Fields: make(map[string][]string),
-			Metas:  make(map[string]string),
+			Id:         result.Id,
+			Fields:     make(map[string][]string),
+			fieldsById: make(map[string][]string),
+			Metas:      make(map[string]string),
 		}
 		for _, i := range result.Items {
 			hn := i.Id
@@ -158,6 +165,7 @@ func (fs *FormsiteApi) fetchResults(url string) ([]*Result, error) {
 				hn = h[i.Id] + "|" + i.Id
 			}
 			r.Fields[hn] = i.Value
+			r.fieldsById[i.Id] = i.Value
 		}
 		for _, i := range result.Metas {
 			//fmt.Println(i.Id, i.Value)
